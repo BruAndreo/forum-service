@@ -1,48 +1,17 @@
 package dev.bruno.forum.service
 
+import dev.bruno.forum.dto.TopicoDTO
 import dev.bruno.forum.model.Curso
 import dev.bruno.forum.model.Topico
 import dev.bruno.forum.model.Usuario
 import org.springframework.stereotype.Service
 
 @Service
-class TopicoService(private var topicos: List<Topico>) {
-
-    init {
-        val topico = Topico(
-            id = 1,
-            titulo = "Duvida Kotlin",
-            mensagem = "Variaveis no Kotlin",
-            curso = Curso(
-                id = 1,
-                nome = "Kotlin",
-                categoria = "Programação"
-            ),
-            autor = Usuario(
-                id = 1,
-                nome = "Ana da Silva",
-                email = "ana@email.com"
-            )
-        )
-
-        val topico2 = Topico(
-            id = 2,
-            titulo = "Duvida Kotlin 2",
-            mensagem = "Variaveis no Kotlin 2",
-            curso = Curso(
-                id = 1,
-                nome = "Kotlin",
-                categoria = "Programação"
-            ),
-            autor = Usuario(
-                id = 1,
-                nome = "Ana da Silva",
-                email = "ana@email.com"
-            )
-        )
-
-        topicos = listOf(topico, topico2)
-    }
+class TopicoService(
+    private var topicos: List<Topico> = mutableListOf(),
+    private val cursoService: CursoService,
+    private val autorService: UsuarioService
+) {
 
     fun listar(): List<Topico> {
         return topicos
@@ -52,5 +21,15 @@ class TopicoService(private var topicos: List<Topico>) {
         return topicos.stream().filter { t ->
             t.id == id
         }.findFirst().get()
+    }
+
+    fun cadastrar(topicoDto: TopicoDTO) {
+        topicos = topicos.plus(Topico(
+            id = topicos.size.toLong() + 1,
+            titulo = topicoDto.titulo,
+            mensagem = topicoDto.mensagem,
+            curso = cursoService.buscaPorId(topicoDto.idCurso),
+            autor = autorService.buscaPorId(topicoDto.idAutor)
+        ))
     }
 }
