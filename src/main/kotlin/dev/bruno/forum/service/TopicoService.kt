@@ -2,24 +2,20 @@ package dev.bruno.forum.service
 
 import dev.bruno.forum.dto.TopicoForm
 import dev.bruno.forum.dto.TopicoView
+import dev.bruno.forum.mapper.TopicoFormMapper
+import dev.bruno.forum.mapper.TopicoViewMapper
 import dev.bruno.forum.model.Topico
 import org.springframework.stereotype.Service
 
 @Service
 class TopicoService(
     private var topicos: List<Topico> = listOf(),
-    private val cursoService: CursoService,
-    private val autorService: UsuarioService
+    private val topicoViewMapper: TopicoViewMapper,
+    private val topicoFormMapper: TopicoFormMapper
 ) {
 
     fun listar(): List<TopicoView> {
-        return topicos.map { topico -> TopicoView(
-            id = topico.id,
-            titulo = topico.titulo,
-            mensagem = topico.mensagem,
-            status = topico.status,
-            dataCriacao = topico.dataCriacao
-        )}.toList()
+        return topicos.map { topico -> topicoViewMapper.map(topico)}.toList()
     }
 
     fun buscarPorId(id: Long): TopicoView {
@@ -27,22 +23,12 @@ class TopicoService(
             t.id == id
         }.first()
 
-        return TopicoView(
-            id = topico.id,
-            titulo = topico.titulo,
-            mensagem = topico.mensagem,
-            status = topico.status,
-            dataCriacao = topico.dataCriacao
-        )
+        return topicoViewMapper.map(topico)
     }
 
     fun cadastrar(topicoForm: TopicoForm) {
-        topicos = topicos.plus(Topico(
-            id = topicos.size.toLong() + 1,
-            titulo = topicoForm.titulo,
-            mensagem = topicoForm.mensagem,
-            curso = cursoService.buscaPorId(topicoForm.idCurso),
-            autor = autorService.buscaPorId(topicoForm.idAutor)
-        ))
+        val t = topicoFormMapper.map(topicoForm)
+        t.id = topicos.size.toLong() + 1
+        topicos = topicos.plus(t)
     }
 }
