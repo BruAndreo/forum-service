@@ -23,9 +23,9 @@ class TopicoService(
     }
 
     fun buscarPorId(id: Long): TopicoView {
-        val topico = topicos.stream().filter { t ->
+        val topico = topicos.filter { t ->
             t.id == id
-        }.findFirst().get()
+        }.first()
 
         return TopicoView(
             id = topico.id,

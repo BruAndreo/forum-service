@@ -9,11 +9,11 @@ class UsuarioService(var usuarios: List<Usuario>) {
     init {
         val usuario = Usuario(id = 1, nome = "Bruno", email = "bruno@email.com")
 
-        usuarios = mutableListOf(usuario)
+        usuarios = listOf(usuario)
     }
 
     fun buscaPorId(id: Long): Usuario {
-        return usuarios.stream().filter { u -> u.id == id }.findFirst().get()
+        return usuarios.filter { u -> u.id == id }.first()
     }
 
 }

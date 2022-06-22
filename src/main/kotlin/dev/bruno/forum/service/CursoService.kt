@@ -13,7 +13,7 @@ class CursoService(var cursos: List<Curso>) {
     }
 
     fun buscaPorId(id: Long): Curso {
-        return cursos.stream().filter { c -> c.id == id }.findFirst().get()
+        return cursos.filter { c -> c.id == id }.first()
     }
 
 }
