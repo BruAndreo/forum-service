@@ -4,7 +4,9 @@ import dev.bruno.forum.dto.AtualizacaoTopicoForm
 import dev.bruno.forum.dto.TopicoForm
 import dev.bruno.forum.dto.TopicoView
 import dev.bruno.forum.service.TopicoService
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.util.UriComponentsBuilder
 import javax.validation.Valid
 
 @RestController
@@ -22,8 +24,13 @@ class TopicoController(private val service: TopicoService) {
     }
 
     @PostMapping
-    fun cadastrar(@RequestBody @Valid topicoForm: TopicoForm) {
-        service.cadastrar(topicoForm)
+    fun cadastrar(
+        @RequestBody @Valid topicoForm: TopicoForm,
+        uriBuilder: UriComponentsBuilder
+    ): ResponseEntity<TopicoView> {
+        val topicoView = service.cadastrar(topicoForm)
+        val uri = uriBuilder.path("/topicos/${topicoView.id}").build().toUri()
+        return ResponseEntity.created(uri).body(topicoView)
     }
 
     @PutMapping

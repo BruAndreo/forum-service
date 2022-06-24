@@ -6,6 +6,7 @@ import dev.bruno.forum.dto.TopicoView
 import dev.bruno.forum.mapper.TopicoFormMapper
 import dev.bruno.forum.mapper.TopicoViewMapper
 import dev.bruno.forum.model.Topico
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
@@ -27,10 +28,11 @@ class TopicoService(
         return topicoViewMapper.map(topico)
     }
 
-    fun cadastrar(topicoForm: TopicoForm) {
+    fun cadastrar(topicoForm: TopicoForm): TopicoView {
         val t = topicoFormMapper.map(topicoForm)
         t.id = topicos.size.toLong() + 1
         topicos = topicos.plus(t)
+        return topicoViewMapper.map(t)
     }
 
     fun atualizar(form: AtualizacaoTopicoForm) {
