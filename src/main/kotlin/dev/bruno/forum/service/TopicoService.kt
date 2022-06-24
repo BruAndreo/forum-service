@@ -3,6 +3,7 @@ package dev.bruno.forum.service
 import dev.bruno.forum.dto.AtualizacaoTopicoForm
 import dev.bruno.forum.dto.TopicoForm
 import dev.bruno.forum.dto.TopicoView
+import dev.bruno.forum.exceptions.NotFoundException
 import dev.bruno.forum.mapper.TopicoFormMapper
 import dev.bruno.forum.mapper.TopicoViewMapper
 import dev.bruno.forum.model.Topico
@@ -56,6 +57,11 @@ class TopicoService(
 
     fun deletar(id: Long) {
         val topico = topicos.filter { it.id == id }.first()
+
+        if (topico.id == null) {
+            NotFoundException("ID não encontrado")
+        }
+
         topicos = topicos.minus(topico)
     }
 }
