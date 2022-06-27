@@ -1,19 +1,14 @@
 package dev.bruno.forum.service
 
 import dev.bruno.forum.model.Usuario
+import dev.bruno.forum.repository.UsuarioRepository
 import org.springframework.stereotype.Service
 
 @Service
-class UsuarioService(var usuarios: List<Usuario>) {
-
-    init {
-        val usuario = Usuario(id = 1, nome = "Bruno", email = "bruno@email.com")
-
-        usuarios = listOf(usuario)
-    }
+class UsuarioService(private val repository: UsuarioRepository) {
 
     fun buscaPorId(id: Long): Usuario {
-        return usuarios.filter { u -> u.id == id }.first()
+        return repository.getReferenceById(id)
     }
 
 }
