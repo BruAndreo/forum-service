@@ -4,6 +4,8 @@ import dev.bruno.forum.dto.AtualizacaoTopicoForm
 import dev.bruno.forum.dto.TopicoForm
 import dev.bruno.forum.dto.TopicoView
 import dev.bruno.forum.service.TopicoService
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
@@ -20,6 +22,8 @@ import javax.validation.Valid
 class TopicoController(private val service: TopicoService) {
 
     @GetMapping
+    @Cacheable("topicos") // Don't make sense put cache in this endpoint, but to study here we are.
+    // Make sense put cache in Cursos endpoint for example. It isn't updated every moment.
     fun listar(
         @RequestParam(required = false) nomeCurso: String?,
         @PageableDefault(sort = ["dataCriacao"], direction = Sort.Direction.DESC) paginacao: Pageable
@@ -34,6 +38,7 @@ class TopicoController(private val service: TopicoService) {
 
     @PostMapping
     @Transactional
+    @CacheEvict(value = ["topicos"], allEntries = true)
     fun cadastrar(
         @RequestBody @Valid topicoForm: TopicoForm,
         uriBuilder: UriComponentsBuilder
@@ -45,6 +50,7 @@ class TopicoController(private val service: TopicoService) {
 
     @PutMapping
     @Transactional
+    @CacheEvict(value = ["topicos"], allEntries = true)
     fun atualizar(@RequestBody @Valid form: AtualizacaoTopicoForm): ResponseEntity<TopicoView> {
         val topicoAtualizado = service.atualizar(form)
         return ResponseEntity.ok(topicoAtualizado)
@@ -53,6 +59,7 @@ class TopicoController(private val service: TopicoService) {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
+    @CacheEvict(value = ["topicos"], allEntries = true)
     fun deletar(@PathVariable id: Long) {
         service.deletar(id)
     }
