@@ -8,6 +8,8 @@ import dev.bruno.forum.mapper.TopicoFormMapper
 import dev.bruno.forum.mapper.TopicoViewMapper
 import dev.bruno.forum.model.Topico
 import dev.bruno.forum.repository.TopicoRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Repository
 import org.springframework.stereotype.Service
@@ -19,14 +21,14 @@ class TopicoService(
     private val topicoFormMapper: TopicoFormMapper
 ) {
 
-    fun listar(nomeCurso: String?): List<TopicoView> {
+    fun listar(nomeCurso: String?, paginacao: Pageable): Page<TopicoView> {
         val topicos = if (nomeCurso == null || nomeCurso.isNotEmpty()) {
-            repository.findAll()
+            repository.findAll(paginacao)
         } else {
-            repository.findByCursoNome(nomeCurso)
+            repository.findByCursoNome(nomeCurso, paginacao)
         }
 
-        return topicos.map { topico -> topicoViewMapper.map(topico)}.toList()
+        return topicos.map { topico -> topicoViewMapper.map(topico)}
     }
 
     fun buscarPorId(id: Long): TopicoView {
