@@ -2,6 +2,7 @@ package dev.bruno.forum.controller
 
 import dev.bruno.forum.dto.AtualizacaoTopicoForm
 import dev.bruno.forum.dto.TopicoForm
+import dev.bruno.forum.dto.TopicoPorCategoriaDto
 import dev.bruno.forum.dto.TopicoView
 import dev.bruno.forum.service.TopicoService
 import org.springframework.cache.annotation.CacheEvict
@@ -62,6 +63,11 @@ class TopicoController(private val service: TopicoService) {
     @CacheEvict(value = ["topicos"], allEntries = true)
     fun deletar(@PathVariable id: Long) {
         service.deletar(id)
+    }
+
+    @GetMapping("/relatorio")
+    fun relatorio(): List<TopicoPorCategoriaDto> {
+        return service.relatorio()
     }
 
 }

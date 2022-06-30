@@ -2,6 +2,7 @@ package dev.bruno.forum.service
 
 import dev.bruno.forum.dto.AtualizacaoTopicoForm
 import dev.bruno.forum.dto.TopicoForm
+import dev.bruno.forum.dto.TopicoPorCategoriaDto
 import dev.bruno.forum.dto.TopicoView
 import dev.bruno.forum.exceptions.NotFoundException
 import dev.bruno.forum.mapper.TopicoFormMapper
@@ -56,5 +57,9 @@ class TopicoService(
 
     fun deletar(id: Long) {
         repository.deleteById(id)
+    }
+
+    fun relatorio(): List<TopicoPorCategoriaDto> {
+        return repository.relatorio()
     }
 }
