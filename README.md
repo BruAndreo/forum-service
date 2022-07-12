@@ -26,5 +26,5 @@ docker build -t forum .
 ### Run container image
 
 ```shell
-docker run -p 8080:8080 forum
+docker run -p 3000:3000 forum
 ```
