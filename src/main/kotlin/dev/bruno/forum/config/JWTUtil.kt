@@ -15,7 +15,8 @@ class JWTUtil(
     private val usuarioService: UsuarioService
 ) {
 
-    private val expiration: Long = 60000
+    @Value("\${jwt.expiration}")
+    private lateinit var expiration: String
 
     @Value("\${jwt.secret}")
     private lateinit var secret: String
@@ -24,7 +25,7 @@ class JWTUtil(
         return Jwts.builder()
             .setSubject(username)
             .claim("role", authorities)
-            .setExpiration(Date(System.currentTimeMillis() + expiration))
+            .setExpiration(Date(System.currentTimeMillis() + expiration.toLong()))
             .signWith(SignatureAlgorithm.HS256, secret.toByteArray())
             .compact()
     }
