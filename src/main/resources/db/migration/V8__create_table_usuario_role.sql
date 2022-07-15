@@ -1,5 +1,5 @@
 CREATE TABLE usuario_role(
-    id BIGINT NOT NULL AUTO_INCREMENT,
+    id SERIAL NOT NULL,
     usuario_id BIGINT NOT NULL,
     role_id BIGINT NOT NULL,
     PRIMARY KEY(id),
