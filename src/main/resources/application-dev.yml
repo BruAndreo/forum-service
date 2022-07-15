@@ -1,6 +1,8 @@
 server:
     port: 3000
 spring:
+    config:
+        import: optional:file:.env[.properties]
     datasource:
         driverClassName: org.h2.Driver
         url: jdbc:h2:mem:forum
@@ -15,6 +17,9 @@ spring:
     h2:
         console:
             enabled: true
+.env:
+    directory: "."
+    prefix: ""
 
 jwt:
-    secret: secreto
+    secret: ${JWT_SECRET}
