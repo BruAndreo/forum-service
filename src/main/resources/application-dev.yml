@@ -8,7 +8,7 @@ spring:
         import: optional:file:.env[.properties]
     datasource:
         driverClassName: org.postgresql.Driver
-        url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?ssl=true
+        url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?ssl=${POSTGRES_SSL}
         username: ${POSTGRES_USER}
         password: ${POSTGRES_PASSWORD}
     jpa:

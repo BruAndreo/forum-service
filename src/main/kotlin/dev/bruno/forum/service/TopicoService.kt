@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Repository
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class TopicoService(
@@ -51,6 +52,7 @@ class TopicoService(
 
         topicoOriginal.titulo = form.titulo
         topicoOriginal.mensagem = form.mensagem
+        topicoOriginal.dataAlteracao = LocalDateTime.now()
 
         return topicoViewMapper.map(topicoOriginal)
     }
