@@ -24,6 +24,7 @@ class TopicoService(
 ) {
 
     fun listar(nomeCurso: String?, paginacao: Pageable): Page<TopicoView> {
+        println("Nome do curso $nomeCurso")
         val topicos = if (nomeCurso == null || nomeCurso.isNotEmpty()) {
             repository.findAll(paginacao)
         } else {
