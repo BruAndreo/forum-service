@@ -6,6 +6,7 @@ import dev.bruno.forum.model.Topico
 import dev.bruno.forum.model.TopicoTest
 import dev.bruno.forum.model.TopicoViewTest
 import dev.bruno.forum.repository.TopicoRepository
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -21,7 +22,6 @@ class TopicoServiceTest {
 
     private val topicoRepository: TopicoRepository = mockk {
         every { findByCursoNome(any(), any()) } returns topicos
-        every { findAll<Topico>(any()) } returns listOf(TopicoTest.build())
     }
 
     private val topicoViewMapper: TopicoViewMapper = mockk {
@@ -35,7 +35,7 @@ class TopicoServiceTest {
     fun `deve listar topicos a partir do nome do curso`() {
         topicoService.listar("Kotlin Avançado", paginacao)
 
-        verify(exactly = 1) { topicoRepository.findByCursoNome(any(), any()) }
+        verify(exactly = 1) { topicoRepository.findByCursoNome(any(), paginacao) }
         verify(exactly = 1) { topicoViewMapper.map(any()) }
         verify(exactly = 0) { topicoRepository.findAll(paginacao) }
     }
