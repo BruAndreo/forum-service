@@ -24,11 +24,10 @@ class TopicoService(
 ) {
 
     fun listar(nomeCurso: String?, paginacao: Pageable): Page<TopicoView> {
-        val topicos = if (nomeCurso.isNullOrEmpty()) {
-            repository.findAll(paginacao)
-        } else {
+        val topicos = nomeCurso?.let {
             repository.findByCursoNome(nomeCurso, paginacao)
-        }
+        } ?: repository.findAll(paginacao)
+
 
         return topicos.map { topico -> topicoViewMapper.map(topico)}
     }
