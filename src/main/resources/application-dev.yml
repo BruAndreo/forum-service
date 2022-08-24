@@ -19,6 +19,11 @@ spring:
                 ddl-auto: create-drop
                 show_sql: true
                 format_sql: true
+    cache:
+        type: redis
+    redis:
+        host: localhost
+        port: 6379
     h2:
         console:
             enabled: true
