@@ -9,6 +9,8 @@ import dev.bruno.forum.mapper.TopicoFormMapper
 import dev.bruno.forum.mapper.TopicoViewMapper
 import dev.bruno.forum.model.Topico
 import dev.bruno.forum.repository.TopicoRepository
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
@@ -23,6 +25,7 @@ class TopicoService(
     private val topicoFormMapper: TopicoFormMapper
 ) {
 
+    @Cacheable(cacheNames = ["topicos"], key = "#root.method.name")
     fun listar(nomeCurso: String?, paginacao: Pageable): Page<TopicoView> {
         val topicos = nomeCurso?.let {
             repository.findByCursoNome(nomeCurso, paginacao)
@@ -39,12 +42,14 @@ class TopicoService(
         return topicoViewMapper.map(topico)
     }
 
+    @CacheEvict(value = ["topicos"], allEntries = true)
     fun cadastrar(topicoForm: TopicoForm): TopicoView {
         val t = topicoFormMapper.map(topicoForm)
         repository.save(t)
         return topicoViewMapper.map(t)
     }
 
+    @CacheEvict(value = ["topicos"], allEntries = true)
     fun atualizar(form: AtualizacaoTopicoForm): TopicoView {
         val topicoOriginal = repository.findById(form.id)
             .orElseThrow { NotFoundException("Topico não encontrado") }
@@ -56,6 +61,7 @@ class TopicoService(
         return topicoViewMapper.map(topicoOriginal)
     }
 
+    @CacheEvict(value = ["topicos"], allEntries = true)
     fun deletar(id: Long) {
         repository.deleteById(id)
     }
