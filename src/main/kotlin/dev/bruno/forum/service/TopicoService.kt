@@ -26,6 +26,7 @@ class TopicoService(
 ) {
 
     @Cacheable(cacheNames = ["topicos"], key = "#root.method.name")
+    // Don't make sense put cache in topicos, make sense in cursos
     fun listar(nomeCurso: String?, paginacao: Pageable): Page<TopicoView> {
         val topicos = nomeCurso?.let {
             repository.findByCursoNome(nomeCurso, paginacao)
