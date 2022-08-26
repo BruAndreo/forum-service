@@ -12,7 +12,7 @@ data class Resposta (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
-    val mesagem: String,
+    val mensagem: String,
 
     val dataCriacao: LocalDateTime = LocalDateTime.now(),
 
@@ -22,5 +22,5 @@ data class Resposta (
     @ManyToOne
     val topico: Topico,
 
-    val solucao: Boolean
+    val solucao: Boolean = false
 )

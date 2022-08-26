@@ -1,5 +1,6 @@
 package dev.bruno.forum.controller
 
+import dev.bruno.forum.dto.RespostaForm
 import dev.bruno.forum.model.Resposta
 import dev.bruno.forum.service.RespostaService
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
@@ -17,6 +18,6 @@ class RespostaController(
 ) {
 
     @PostMapping
-    fun salvar(@RequestBody @Valid resposta: Resposta) = service.salvar(resposta)
+    fun salvar(@RequestBody @Valid respostaForm: RespostaForm) = service.salvar(respostaForm)
 
 }
